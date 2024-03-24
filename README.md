@@ -1,1 +1,1 @@
-# app-example
+Пример для канала https://t.me/DevOpsologist

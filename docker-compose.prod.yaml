@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+    php:
+        image: registry.example.com/backend/app-example:prod
+        restart: always
+        volumes:
+            - logs-php-container:/app/var/log
+        networks:
+            - traefik-public
+            - default
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.app-example.entryPoints=https
+            - traefik.http.routers.app-example.rule=Host(`app-example.example.com`)
+            - traefik.http.routers.app-example.tls=true
+            - traefik.http.routers.app-example.tls.certResolver=myResolver
+            - traefik.http.services.app-example.loadBalancer.server.port=80
+
+    php-logs-sender:
+        image: busybox:1.36
+        restart: always
+        depends_on:
+            php:
+                condition: service_started
+        volumes:
+            - logs-php-container:/logs
+        logging:
+            driver: loki
+            options:
+                loki-url: http://172.17.0.1:3100/loki/api/v1/push
+        stop_signal: SIGKILL
+        command: [
+            "/bin/sh",
+            "-c",
+            "while [ ! -e /logs/prod.json];
+             do
+                echo \"Waiting for prod.json to become available\";
+                sleep 2;
+             done;
+             tail -f /logs/prod.json"
+        ]
+
+volumes:
+    logs-php-container: null
+
+networks:
+    traefik-public:
+        external: true

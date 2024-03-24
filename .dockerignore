@@ -1,0 +1,14 @@
+## Ignore all
+*
+
+## Except
+!/bin
+!/config
+!/docker
+!/public
+!/src
+!.env
+!.env.local
+!composer.json
+!composer.lock
+!symfony.lock

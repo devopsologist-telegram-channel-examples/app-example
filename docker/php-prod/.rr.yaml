@@ -1,0 +1,26 @@
+version: '3'
+
+server:
+    command: 'php ../../public/index.php'
+    env:
+        - APP_RUNTIME: 'Runtime\RoadRunnerSymfonyNyholm\Runtime'
+
+http:
+    address: 0.0.0.0:80
+    middleware: [ 'static' ]
+    static:
+        dir: '../../public/'
+    pool:
+        num_workers: 10
+        supervisor:
+            max_worker_memory: 110
+
+rpc:
+    listen: tcp://0.0.0.0:6001
+
+metrics:
+    address: 0.0.0.0:8081
+
+logs:
+    mode: production
+    output: stdout

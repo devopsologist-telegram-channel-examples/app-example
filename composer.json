@@ -1,0 +1,72 @@
+{
+    "name": "app/example",
+    "description": "Example symfony application",
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": "^8.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "runtime/roadrunner-symfony-nyholm": "^0.3.1",
+        "symfony/console": "^7.0.4",
+        "symfony/dotenv": "^7.0.4",
+        "symfony/flex": "^2.4.5",
+        "symfony/framework-bundle": "^7.0.4",
+        "symfony/http-kernel": "^7.0.5",
+        "symfony/monolog-bundle": "^3.10",
+        "symfony/runtime": "^7.0.3",
+        "symfony/validator": "^7.0.5",
+        "symfony/yaml": "^7.0.3"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.42",
+        "friendsofphp/php-cs-fixer": "^3.52.1",
+        "icanhazstring/composer-unused": "^0.8.11",
+        "maglnet/composer-require-checker": "^4.10",
+        "phpyh/coding-standard": "^2.6.1",
+        "psalm/plugin-symfony": "^5.1",
+        "rector/rector": "^1.0.3",
+        "vimeo/psalm": "^5.23.1"
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "7.0.*"
+        }
+    }
+}
