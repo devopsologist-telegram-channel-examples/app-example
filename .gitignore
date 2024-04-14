@@ -12,3 +12,7 @@ docker/traefik/*.key
 ###< symfony/framework-bundle ###
 
 
+
+###> baldinof/roadrunner-bundle ###
+/bin/rr
+###< baldinof/roadrunner-bundle ###

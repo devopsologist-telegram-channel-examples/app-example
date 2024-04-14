@@ -8,7 +8,7 @@ use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
 return static fn(Configuration $config): Configuration => $config
     ->addNamedFilter(NamedFilter::fromString('ext-ctype'))
     ->addNamedFilter(NamedFilter::fromString('ext-iconv'))
-    ->addNamedFilter(NamedFilter::fromString('runtime/roadrunner-symfony-nyholm'))
+    ->addNamedFilter(NamedFilter::fromString('baldinof/roadrunner-bundle'))
     ->addNamedFilter(NamedFilter::fromString('symfony/console'))
     ->addNamedFilter(NamedFilter::fromString('symfony/dotenv'))
     ->addNamedFilter(NamedFilter::fromString('symfony/flex'))

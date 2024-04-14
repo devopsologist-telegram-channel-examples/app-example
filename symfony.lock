@@ -1,4 +1,16 @@
 {
+    "baldinof/roadrunner-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "0da69c96650460102ed0a2a0004e5b347f7220c9"
+        },
+        "files": [
+            "config/packages/baldinof_road_runner.yaml"
+        ]
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "3.52",
         "recipe": {
@@ -9,18 +21,6 @@
         },
         "files": [
             ".php-cs-fixer.dist.php"
-        ]
-    },
-    "nyholm/psr7": {
-        "version": "1.8",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.0",
-            "ref": "4a8c0345442dcca1d8a2c65633dcf0285dd5a5a2"
-        },
-        "files": [
-            "config/packages/nyholm_psr7.yaml"
         ]
     },
     "phpstan/phpstan": {

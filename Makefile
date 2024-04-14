@@ -125,6 +125,7 @@ composer-normalize-fix: ## Нормализация composer.json (https://githu
 ## ------
 
 build-prod-image:
+	echo "APP_ENV=prod" > .env.local
 	DOCKER_BUILDKIT=1 docker build -f ./docker/php-prod/Dockerfile -t $(CI_REGISTRY_IMAGE):prod .
 
 push-prod-image:

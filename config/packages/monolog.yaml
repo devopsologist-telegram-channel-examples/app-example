@@ -42,7 +42,7 @@ when@prod:
         handlers:
             main:
                 type: stream
-                path: '%kernel.logs_dir%/%kernel.environment%.json'
+                path: php://stderr
                 formatter: monolog.formatter.json
             console:
                 type: console
