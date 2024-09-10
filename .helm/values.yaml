@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+    repository: ci-registry-image
+    pullPolicy: IfNotPresent
+    tag: "image-version"
+    pullSecretName: registry-pull
+
+service:
+    name: http
+    port: 80
+    targetPort: 8080
+    type: ClusterIP
+    protocol: TCP
+
+livenessProbe:
+    path: /
+
+readinessProbe:
+    path: /
+
+resources:
+    limits:
+        cpu: 1
+        memory: 1280Mi
+    requests:
+        cpu: 1
+        memory: 1280Mi
+
+
+ingress:
+    className: nginx
+    host: app-example.local
+    path: /
+    pathType: Prefix

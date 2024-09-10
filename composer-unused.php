@@ -14,6 +14,8 @@ return static fn(Configuration $config): Configuration => $config
     ->addNamedFilter(NamedFilter::fromString('symfony/flex'))
     ->addNamedFilter(NamedFilter::fromString('symfony/monolog-bundle'))
     ->addNamedFilter(NamedFilter::fromString('symfony/runtime'))
+    ->addNamedFilter(NamedFilter::fromString('symfony/twig-bundle'))
+    ->addNamedFilter(NamedFilter::fromString('twig/twig'))
     ->addNamedFilter(NamedFilter::fromString('symfony/validator'))
     ->addNamedFilter(NamedFilter::fromString('symfony/yaml'))
 ;
