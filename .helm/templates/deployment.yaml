@@ -1,41 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: {{ .Chart.Name }}-deployment
-    labels:
-        app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}-deployment
+  labels:
+    app: {{ .Chart.Name }}
 spec:
-    replicas: {{ .Values.replicaCount }}
-    selector:
-        matchLabels:
-            app: {{ .Chart.Name }}
-    template:
-        metadata:
-            labels:
-                app: {{ .Chart.Name }}
-        spec:
-            imagePullSecrets:
-                - name: {{ .Values.image.pullSecretName }}
-            containers:
-                -   name: {{ .Chart.Name }}
-                    image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-                    imagePullPolicy: {{ .Values.image.pullPolicy }}
-                    ports:
-                        -   name: {{ .Values.service.name }}
-                            containerPort: {{ .Values.service.targetPort }}
-                            protocol: {{ .Values.service.protocol }}
-                    livenessProbe:
-                        httpGet:
-                            path: {{ .Values.livenessProbe.path }}
-                            port: {{ .Values.service.targetPort }}
-                    readinessProbe:
-                        httpGet:
-                            path: {{ .Values.readinessProbe.path }}
-                            port: {{ .Values.service.targetPort }}
-                    resources:
-                        limits:
-                            cpu: {{ .Values.resources.limits.cpu }}
-                            memory: {{ .Values.resources.limits.memory }}
-                        requests:
-                            cpu: {{ .Values.resources.requests.cpu }}
-                            memory: {{ .Values.resources.requests.memory }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecretName }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: {{ .Values.service.name }}
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: {{ .Values.service.protocol }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.service.targetPort }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.service.targetPort }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
