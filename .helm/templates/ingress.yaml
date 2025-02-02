@@ -4,6 +4,10 @@ metadata:
   name: {{ .Chart.Name }}-ingress
 spec:
   ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tlsSecret }}
   rules:
     - host: {{ .Values.ingress.host | quote }}
       http:

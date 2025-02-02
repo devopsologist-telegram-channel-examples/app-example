@@ -30,6 +30,7 @@ resources:
 
 ingress:
   className: nginx
-  host: app-example.local
+  host: app-example.example.com
+  tlsSecret: app-example-tls
   path: /
   pathType: Prefix
