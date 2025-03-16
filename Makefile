@@ -52,10 +52,38 @@ down: ## Остановить приложение
 .PHONY: stop
 
 ##
+## БД
+## ------
+
+db: vendor ## Создать базу данных и обновить схему
+	$(PHP_CONTAINER_SHELL) pg_isready -h $(DB_HOST) -p $(DB_PORT) -d $(DB_NAME)
+	$(BIN_CONSOLE) doctrine:database:create --if-not-exists
+	$(BIN_CONSOLE) doctrine:migrations:migrate --no-interaction
+.PHONY: db
+
+db-rollback: vendor ## Откатить последнюю миграцию
+	$(BIN_CONSOLE) doctrine:migrations:migrate prev --no-interaction
+.PHONY: db-rollback
+
+db-drop: vendor ## Удалить базу
+	$(PHP_CONTAINER_SHELL) pg_isready -h $(DB_HOST) -p $(DB_PORT) -d $(DB_NAME)
+	$(BIN_CONSOLE) doctrine:database:drop --if-exists --force --no-interaction
+.PHONY: db-drop
+
+migrations: vendor ## Создать миграцию
+	$(BIN_CONSOLE) doctrine:migrations:diff --allow-empty-diff --no-interaction
+	git add migrations
+.PHONY: migrations
+
+schema-validate: vendor ## Проверяет, что схема бд полностью соответствует схеме приложения
+	$(BIN_CONSOLE) schema:validate
+.PHONY: schema-validate
+
+##
 ## Качество кода
 ## ------
 
-check: rector cs psalm yaml-lint container composer ## Запустить все проверки качества кода
+check: rector cs psalm yaml-lint container schema-validate composer ## Запустить все проверки качества кода
 .PHONY: check
 
 psalm: var vendor ## Запустить полный статический анализ PHP кода при помощи Psalm (https://psalm.dev/)
@@ -119,25 +147,3 @@ composer-normalize: ## Нормализация composer.json. Анализ (htt
 composer-normalize-fix: ## Нормализация composer.json (https://github.com/ergebnis/composer-normalize)
 	$(COMPOSER_BIN) normalize
 .PHONY: composer-normalize-fix
-
-##
-## CI/CD
-## ------
-
-build-prod-image:
-	echo "APP_ENV=prod" > .env.local
-	DOCKER_BUILDKIT=1 docker build -f ./docker/php-prod/Dockerfile -t $(CI_REGISTRY_IMAGE):prod .
-
-push-prod-image:
-	docker login -u $(CI_REGISTRY_USER) -p $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)
-	docker push $(CI_REGISTRY_IMAGE):prod
-	docker logout $(CI_REGISTRY)
-
-deploy:
-	ssh -p 1234 gitlab-deploy@example.com "mkdir -p /home/gitlab-deploy/app-example"
-	scp -P 1234 docker-compose.prod.yaml gitlab-deploy@example.com:/home/gitlab-deploy/app-example
-	ssh -p 1234 gitlab-deploy@example.com "docker login -u $(CI_REGISTRY_USER) -p $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)"
-	ssh -p 1234 gitlab-deploy@example.com "docker pull $(CI_REGISTRY_IMAGE):prod"
-	ssh -p 1234 gitlab-deploy@example.com "cd /home/gitlab-deploy/app-example && docker compose -f docker-compose.prod.yaml down --remove-orphans"
-	ssh -p 1234 gitlab-deploy@example.com "cd /home/gitlab-deploy/app-example && docker compose -f docker-compose.prod.yaml up --remove-orphans --detach"
-	ssh -p 1234 gitlab-deploy@example.com "docker logout $(CI_REGISTRY)"

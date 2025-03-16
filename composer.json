@@ -7,28 +7,39 @@
         "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "baldinof/roadrunner-bundle": "^3.1.2",
-        "symfony/console": "^7.0.10",
-        "symfony/dotenv": "^7.0.10",
-        "symfony/flex": "^2.4.6",
-        "symfony/framework-bundle": "^7.0.10",
-        "symfony/http-kernel": "^7.0.10",
+        "baldinof/roadrunner-bundle": "^3.2.0",
+        "cuyz/valinor": "^1.14.4",
+        "doctrine/dbal": "^4.2.3",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/migrations": "^3.8.2",
+        "doctrine/orm": "^3.3.2",
+        "symfony/console": "^7.2.1",
+        "symfony/dependency-injection": "^7.2.4",
+        "symfony/dotenv": "^7.2.0",
+        "symfony/flex": "^2.5.0",
+        "symfony/framework-bundle": "^7.2.4",
+        "symfony/http-foundation": "^7.2.3",
+        "symfony/http-kernel": "^7.2.4",
+        "symfony/messenger": "^7.2.4",
         "symfony/monolog-bundle": "^3.10",
-        "symfony/runtime": "^7.0.8",
-        "symfony/twig-bundle": "^7.0.8",
-        "symfony/validator": "^7.0.10",
-        "symfony/yaml": "^7.0.8",
-        "twig/twig": "^3.13"
+        "symfony/routing": "^7.2.3",
+        "symfony/runtime": "^7.2.3",
+        "symfony/twig-bundle": "^7.2.0",
+        "symfony/validator": "^7.2.4",
+        "symfony/yaml": "^7.2.3",
+        "thesis/postgres": "dev-master",
+        "thesis/thesis": "dev-master",
+        "twig/twig": "^3.20"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.43",
-        "friendsofphp/php-cs-fixer": "^3.64.0",
+        "ergebnis/composer-normalize": "^2.45",
+        "friendsofphp/php-cs-fixer": "^3.72.0",
         "icanhazstring/composer-unused": "^0.8.11",
-        "maglnet/composer-require-checker": "^4.12",
+        "maglnet/composer-require-checker": "^4.15",
         "phpyh/coding-standard": "^2.6.2",
-        "psalm/plugin-symfony": "^5.2.5",
-        "rector/rector": "^1.2.5",
-        "vimeo/psalm": "^5.26.0"
+        "psalm/plugin-symfony": "^5.2.6",
+        "rector/rector": "^1.2.10",
+        "vimeo/psalm": "^5.26.1"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -44,6 +55,16 @@
     "conflict": {
         "symfony/symfony": "*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Etherlord/postgres-thesis"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Etherlord/thesis"
+        }
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "autoload": {
@@ -68,7 +89,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.0.*"
+            "require": "7.2.*"
         }
     }
 }

@@ -1,7 +1,7 @@
 version: '3'
 
 server:
-    command: 'php ../../public/index.php'
+    command: 'php public/index.php'
     env:
         -   APP_RUNTIME: 'Baldinof\RoadRunnerBundle\Runtime\Runtime'
 
@@ -9,7 +9,7 @@ http:
     address: 0.0.0.0:80
     middleware: [ 'static' ]
     static:
-        dir: '../../public/'
+        dir: 'public/'
     pool:
         debug: true
         num_workers: 1
@@ -26,4 +26,4 @@ metrics:
 logs:
     mode: development
     level: debug
-    output: ../../var/log/rr.log
+    output: var/log/rr.log

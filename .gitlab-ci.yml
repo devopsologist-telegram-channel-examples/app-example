@@ -6,7 +6,7 @@ stages:
 build:
     stage: build
     script:
-        - docker build -f ./docker/php-prod/Dockerfile -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA} .
+        - docker build -f ./docker/php/Dockerfile --target=prod-php -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA} .
     when: on_success
     only:
         - master

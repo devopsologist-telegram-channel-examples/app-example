@@ -5,10 +5,12 @@
 !/bin
 !/config
 !/docker
+!/migrations
 !/public
 !/src
 !.env
 !.env.local
+!.rr.yaml
 !composer.json
 !composer.lock
 !symfony.lock

@@ -9,7 +9,8 @@ return static fn(Configuration $config): Configuration => $config
     ->addNamedFilter(NamedFilter::fromString('ext-ctype'))
     ->addNamedFilter(NamedFilter::fromString('ext-iconv'))
     ->addNamedFilter(NamedFilter::fromString('baldinof/roadrunner-bundle'))
-    ->addNamedFilter(NamedFilter::fromString('symfony/console'))
+    ->addNamedFilter(NamedFilter::fromString('doctrine/doctrine-migrations-bundle'))
+    ->addNamedFilter(NamedFilter::fromString('doctrine/orm'))
     ->addNamedFilter(NamedFilter::fromString('symfony/dotenv'))
     ->addNamedFilter(NamedFilter::fromString('symfony/flex'))
     ->addNamedFilter(NamedFilter::fromString('symfony/monolog-bundle'))
@@ -17,5 +18,4 @@ return static fn(Configuration $config): Configuration => $config
     ->addNamedFilter(NamedFilter::fromString('symfony/twig-bundle'))
     ->addNamedFilter(NamedFilter::fromString('twig/twig'))
     ->addNamedFilter(NamedFilter::fromString('symfony/validator'))
-    ->addNamedFilter(NamedFilter::fromString('symfony/yaml'))
 ;

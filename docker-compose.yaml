@@ -1,20 +1,41 @@
 services:
+    postgres:
+        image: postgres:17.3
+        command: postgres -c config_file=/etc/postgresql/postgresql.conf
+        healthcheck:
+            test: pg_isready -d ${DB_NAME}
+            interval: 5s
+            timeout: 5s
+            retries: 30
+        environment:
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - TZ=Europe/Moscow
+        ports:
+            - '${DB_PORT_EXTERNAL}:5432'
+        volumes:
+            - postgres:/var/lib/postgresql/data:delegated
+            - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     php:
         build:
             context: docker/php
+            target: dev-php
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
-        working_dir: /var/www/html
+        depends_on:
+            postgres:
+                condition: service_healthy
+        working_dir: /app
         tty: true
         extra_hosts:
             - host.docker.internal:host-gateway
         environment:
             COMPOSER_ROOT_VERSION: ${COMPOSER_ROOT_VERSION}
         volumes:
-            - .:/var/www/html:cached
+            - .:/app:cached
             - ~/.composer:/var/www/.composer
-        command: sh -c "rr serve -d -c ./docker/php/.rr.yaml"
+        command: sh -c "rr serve -d -c .rr.dev.yaml"
         labels:
             - traefik.enable=true
             - traefik.http.routers.php.service=php
@@ -46,3 +67,6 @@ services:
             - traefik.http.routers.traefik.rule=Host(`traefik.app-example.localhost`)
             - traefik.http.routers.traefik.tls=true
             - traefik.http.services.traefik.loadBalancer.server.port=8080
+
+volumes:
+    postgres: null

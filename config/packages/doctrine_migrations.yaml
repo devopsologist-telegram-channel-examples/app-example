@@ -1,0 +1,12 @@
+doctrine_migrations:
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        App\Migrations: '%kernel.project_dir%/migrations'
+    storage:
+        table_storage:
+            table_name: migration
+    all_or_nothing: true
+    custom_template: '%kernel.project_dir%/migrations/template.php.txt'
+    organize_migrations: BY_YEAR_AND_MONTH
+    enable_profiler: false
