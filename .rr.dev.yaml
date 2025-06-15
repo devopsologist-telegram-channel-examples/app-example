@@ -7,7 +7,7 @@ server:
 
 http:
     address: 0.0.0.0:80
-    middleware: [ 'static' ]
+    middleware: [ 'static', 'http_metrics' ]
     static:
         dir: 'public/'
     pool:
@@ -22,6 +22,10 @@ rpc:
 
 metrics:
     address: 0.0.0.0:8081
+    collect:
+        random_metric:
+            type: gauge
+            help: "Random number from app."
 
 logs:
     mode: development

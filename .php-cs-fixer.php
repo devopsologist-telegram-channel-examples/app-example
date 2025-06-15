@@ -30,6 +30,7 @@ $config = (new Config())
     'method_chaining_indentation' => true,
     'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
     'single_line_empty_body' => false,
+    'numeric_literal_separator' => false,
 ]);
 
 return $config;

@@ -1,6 +1,6 @@
 FROM composer:2.8 AS composer
-FROM spiralscout/roadrunner:2024.3 AS roadrunner
-FROM mlocati/php-extension-installer:2.7 AS php-extension-installer
+FROM spiralscout/roadrunner:2025.1 AS roadrunner
+FROM mlocati/php-extension-installer:2.8 AS php-extension-installer
 FROM php:8.3-cli-bookworm AS dev-php
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
