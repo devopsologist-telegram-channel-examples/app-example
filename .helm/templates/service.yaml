@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Chart.Name }}-service
+  labels:
+    app.kubernetes.io/component: {{ .Values.service.component }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -9,5 +11,9 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
       protocol: {{ .Values.service.protocol }}
       name: {{ .Values.service.name }}
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: {{ .Values.service.metricsTargetPort }}
+      protocol: {{ .Values.service.metricsProtocol }}
+      name: {{ .Values.service.metricsName }}
   selector:
     app: {{ .Chart.Name }}

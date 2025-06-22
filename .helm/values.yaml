@@ -7,11 +7,16 @@ image:
   pullSecretName: registry-pull
 
 service:
+  component: app-example
   name: http
   port: 80
   targetPort: 8080
   type: ClusterIP
   protocol: TCP
+  metricsName: metrics
+  metricsPort: 8081
+  metricsTargetPort: 8081
+  metricsProtocol: TCP
 
 livenessProbe:
   path: /
