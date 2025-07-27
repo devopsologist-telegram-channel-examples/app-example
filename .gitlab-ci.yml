@@ -29,14 +29,45 @@ push:
 
 deploy:
     stage: deploy
+    variables:
+        CHART_DIR: .helm
+        CHART_NAME: app-example
+        CHART_REPO: ${CHART_NAME}
+    before_script:
+        - helm repo add --username ${HELM_USER} --password ${HELM_PASS} ${CHART_REPO} https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/helm/stable || true
     script:
+        - echo "Получаем последнюю опубликованную версию Helm Chart из GitLab Package Registry"
+
+        # Получаем список пакетов по API
+        - PACKAGE_API="https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages?package_name=${CHART_NAME}&order_by=version&sort=desc"
+        - 'RESPONSE=$(curl -s --header "JOB-TOKEN: $CI_JOB_TOKEN" "$PACKAGE_API")'
+
+        # Извлекаем последнюю версию из JSON
+        - LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.[].version' | sort -V | tail -n 1)
+        - |
+            if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
+              echo "Нет опубликованных версий — читаем из Chart.yaml"
+              LATEST_VERSION=$(yq eval '.version' "$CHART_DIR/Chart.yaml")
+            fi
+
+        - 'echo "Последняя версия: $LATEST_VERSION"'
+
+        # Инкремент patch-версии
+        - IFS='.' read -r MAJOR MINOR PATCH <<< "$LATEST_VERSION"
+        - PATCH=$((PATCH + 1))
+        - NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+        - 'echo "Новая версия: $NEW_VERSION"'
+
+        # Пакуем и публикуем chart
+        - echo "Пакуем и публикуем helm chart"
         - sed -i "s|ci-registry-image|${CI_REGISTRY_IMAGE}|" .helm/values.yaml
         - sed -i "s/image-version/${CI_COMMIT_SHORT_SHA}/" .helm/values.yaml
-        - helm repo add --username ${HELM_USER} --password ${HELM_PASS} app-example https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/helm/stable || true
-        - helm package --version 0.1.${CI_JOB_ID} .helm/
-        - helm cm-push app-example-0.1.${CI_JOB_ID}.tgz app-example
+        - helm package --version ${NEW_VERSION} .helm/
+        - helm cm-push ${CHART_NAME}-${NEW_VERSION}.tgz ${CHART_REPO}
     when: on_success
     only:
         - master
+    needs:
+        - push
     tags:
         - app-example
