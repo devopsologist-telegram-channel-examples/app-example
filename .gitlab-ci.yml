@@ -33,29 +33,11 @@ deploy:
         CHART_DIR: .helm
         CHART_NAME: app-example
         CHART_REPO: ${CHART_NAME}
+        GIT_DEPTH: 0
     before_script:
         - helm repo add --username ${HELM_USER} --password ${HELM_PASS} ${CHART_REPO} https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/helm/stable || true
     script:
-        - echo "Получаем последнюю опубликованную версию Helm Chart из GitLab Package Registry"
-
-        # Получаем список пакетов по API
-        - PACKAGE_API="https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages?package_name=${CHART_NAME}&order_by=version&sort=desc"
-        - 'RESPONSE=$(curl -s --header "JOB-TOKEN: $CI_JOB_TOKEN" "$PACKAGE_API")'
-
-        # Извлекаем последнюю версию из JSON
-        - LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.[].version' | sort -V | tail -n 1)
-        - |
-            if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
-              echo "Нет опубликованных версий — читаем из Chart.yaml"
-              LATEST_VERSION=$(yq eval '.version' "$CHART_DIR/Chart.yaml")
-            fi
-
-        - 'echo "Последняя версия: $LATEST_VERSION"'
-
-        # Инкремент patch-версии
-        - IFS='.' read -r MAJOR MINOR PATCH <<< "$LATEST_VERSION"
-        - PATCH=$((PATCH + 1))
-        - NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+        - NEW_VERSION=$(gitversion | jq -r '.SemVer')
         - 'echo "Новая версия: $NEW_VERSION"'
 
         # Пакуем и публикуем chart
